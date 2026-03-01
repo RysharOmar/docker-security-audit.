@@ -1,0 +1,33 @@
+name: Security Audit Pipeline
+on: [push] # Se activa con cada subida de código
+
+jobs:
+  verify-security:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4 # El runner descarga tus archivos
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Instalar dependencias
+        run: pip install dockerfile # Instala la librería para el script
+
+      - name: Ejecutar Auditor de Seguridad
+        run: python auditor.py # Si este falla con exit 1, el build no se ejecuta
+
+  build-and-push:
+    needs: verify-security # Solo corre si la auditoría fue exitosa
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Login en Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Construir Imagen
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/mi-app:latest.
