@@ -29,7 +29,7 @@ def check_dockerfile(dockerfile_path):
 # Recorrer archivos (buscando Dockerfile o Dockerfile.txt)
 for root, dirs, files in os.walk(dockerfile_directory):
     for file in files:
-        if file.startswith('Dockerfile'):
+        if file.startswith('DockerfileSeguro'):
             check_dockerfile(os.path.join(root, file))
 
 # Imprimir resultados
