@@ -1,4 +1,0 @@
-FROM ubuntu:latest
-RUN echo "secret_password" > /secrets.txt
-EXPOSE 80
-USER root
