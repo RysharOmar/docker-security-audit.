@@ -1,5 +1,5 @@
 import os
-
+import sys
 # Ruta del directorio
 dockerfile_directory = '.'
 
@@ -37,5 +37,7 @@ print("\n--- Reporte de Auditoría ---")
 if violations:
     for v in violations:
         print(f"[ALERTA] {v}")
+    sys.exit(1)   # <--- Esto hace que el job falle
 else:
     print("No se encontraron violaciones críticas.")
+    sys.exit(0)   # Opcional, explícito
