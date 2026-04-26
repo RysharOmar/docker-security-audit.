@@ -1,5 +1,5 @@
 import os
-
+import sys
 # Ruta del directorio
 dockerfile_directory = '.'
 
@@ -29,7 +29,7 @@ def check_dockerfile(dockerfile_path):
 # Recorrer archivos (buscando Dockerfile o Dockerfile.txt)
 for root, dirs, files in os.walk(dockerfile_directory):
     for file in files:
-        if file.startswith('Dockerfile'):
+        if file.startswith('Multi-stageDockerfile'):
             check_dockerfile(os.path.join(root, file))
 
 # Imprimir resultados
@@ -37,5 +37,7 @@ print("\n--- Reporte de Auditoría ---")
 if violations:
     for v in violations:
         print(f"[ALERTA] {v}")
+    sys.exit(1)   # <--- Esto hace que el job falle
 else:
     print("No se encontraron violaciones críticas.")
+    sys.exit(0)   # Opcional, explícito
