@@ -19,7 +19,7 @@ jobs:
           pip install dockerfile-parse 
 
       - name: Run Auditor
-        # Importante: Tu auditor.py debe estar configurado para leer 'DockerfilePass'
+        # Importante: Tu auditor.py debe estar configurado para leer 'DockerfilePass'.
         run: python auditor.py
 
   build-image:
