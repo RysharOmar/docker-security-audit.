@@ -57,4 +57,4 @@ if violations:
 else:
     print(f"Auditoría completada exitosamente sobre {files_analyzed} archivo(s).")
     print("No se encontraron violaciones críticas.")
-    sys.exit(0)  # El pipeline puede continuar a la construcción de la imagen
+    sys.exit(0)  # El pipeline puede continuar a la construcción de la imagen.
