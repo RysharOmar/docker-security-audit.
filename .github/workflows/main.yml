@@ -6,11 +6,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-      - run: pip install dockerfile
+          
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # Asegúrate de que este es el nombre correcto de la librería que usa tu auditor.py
+          pip install dockerfile-parse 
+
       - name: Run Auditor
         run: python auditor.py
 
@@ -19,10 +26,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      - name: List files (Diagnóstico)
+        run: ls -la # Esto nos dirá si el Dockerfile existe y cómo se llama exactamente
+
       - name: Login to Registry
-        # CORRECCIÓN: Usamos DOCKER_USERNAME para que coincida con el secreto que creaste
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
       - name: Build and Push
         run: |
+          # Si el archivo se llama Dockerfile (sin extensión), esto funcionará:
           docker build -t ryshar/mi-app:1.0 .
           docker push ryshar/mi-app:1.0
