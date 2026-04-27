@@ -6,21 +6,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
+      
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-
+          
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          # Instalamos la librería necesaria para que auditor.py funcione
+          # Instalamos dockerfile-parse para que auditor.py pueda leer el archivo
           pip install dockerfile-parse 
 
       - name: Run Auditor
-        # Aquí asumimos que auditor.py está programado para buscar el archivo. 
-        # Si auditor.py busca "Dockerfile", cámbiale el nombre dentro del script a "DockerfilePass"
+        # Importante: Tu auditor.py debe estar configurado para leer 'DockerfilePass'
         run: python auditor.py
 
   build-image:
@@ -34,8 +33,6 @@ jobs:
 
       - name: Build and Push
         run: |
-          # EXPLICACIÓN DE LOS CAMBIOS:
-          # 1. Usamos '-f DockerfilePass' para decirle a Docker qué archivo usar.
-          # 2. Usamos 'ryshar' (o tu usuario de Docker Hub) para que el push sea válido.
+          # CORRECCIÓN: Usamos '-f DockerfilePass' para apuntar al archivo correcto
           docker build -f DockerfilePass -t ryshar/mi-app:1.0 .
           docker push ryshar/mi-app:1.0
