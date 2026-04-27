@@ -1,4 +1,0 @@
-FROM ubuntu:latest
-RUN echo "password=1234" > /tmp/secret.txt
-EXPOSE 80
-USER root
